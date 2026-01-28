@@ -1,1 +1,1 @@
-# Credit Card Customer Dashboard & Analysis 
+# Consumer Behavior Analytics in Retail: A SQL & Power BI Approach
