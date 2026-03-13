@@ -2,23 +2,31 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# 1. Load your pre-processed dataset
+# Load the dataset you processed in your notebook
 df = pd.read_csv('customer_shopping_behavior.csv')
 
-# 2. Add Sidebar Interactivity
-st.sidebar.header("Filter Results")
-selected_season = st.sidebar.multiselect("Select Season", options=df['Season'].unique(), default=df['Season'].unique())
-selected_category = st.sidebar.multiselect("Select Category", options=df['Category'].unique(), default=df['Category'].unique())
+st.set_page_config(page_title="Retail Analytics Dashboard", layout="wide")
 
-# 3. Filter data based on user input
-filtered_df = df[(df['Season'].isin(selected_season)) & (df['Category'].isin(selected_category))]
+st.title("🛒 Consumer Behavior Analytics in Retail")
+st.markdown("Interactive analysis based on SQL & Power BI approach")
 
-# 4. Display Live Metrics
-st.title("Consumer Behavior Analytics")
-col1, col2 = st.columns(2)
-col1.metric("Average Purchase Amount", f"${filtered_df['Purchase Amount (USD)'].mean():.2f}")
-col2.metric("Avg Review Rating", f"{filtered_df['Review Rating'].mean():.1f} / 5.0")
+# Sidebar for Interaction
+st.sidebar.header("Filter Data")
+selected_category = st.sidebar.multiselect(
+    "Select Category", 
+    options=df['Category'].unique(), 
+    default=df['Category'].unique()
+)
 
-# 5. Interactive Visuals
-fig = px.sunburst(filtered_df, path=['Category', 'Item Purchased'], values='Purchase Amount (USD)')
-st.plotly_chart(fig)
+# Filter logic
+filtered_df = df[df['Category'].isin(selected_category)]
+
+# Display Metrics
+col1, col2, col3 = st.columns(3)
+col1.metric("Total Records", len(filtered_df))
+col2.metric("Avg Purchase (USD)", f"${filtered_df['Purchase Amount (USD)'].mean():.2f}")
+col3.metric("Avg Rating", f"{filtered_df['Review Rating'].mean():.1f}")
+
+# Visualization
+fig = px.bar(filtered_df, x="Season", y="Purchase Amount (USD)", color="Gender", barmode="group")
+st.plotly_chart(fig, use_container_width=True)
