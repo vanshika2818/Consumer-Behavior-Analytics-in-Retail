@@ -1,0 +1,16 @@
+name: Deploy Live Analytics
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Streamlit Cloud
+        # This step is often handled automatically by connecting 
+        # your GitHub repo directly to Streamlit Community Cloud or Render.
+        run: echo "Triggering auto-deployment..."
