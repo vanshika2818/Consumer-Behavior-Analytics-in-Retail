@@ -11,7 +11,7 @@ st.title("🛒 Dynamic Consumer Behavior Analytics")
 @st.cache_data
 def load_data():
     # 1. Securely fetch the database URL from Render's environment variables
-    db_url = os.environ.get("postgresql+psycopg2://{username}:{password}@{host}:/{database}")
+    db_url = os.environ.get("DATABASE_URL")
     
     # 2. Connect to the cloud database
     engine = create_engine(db_url)
@@ -114,7 +114,7 @@ with st.sidebar.form("write_back_form"):
     submit_tx = st.form_submit_button("Submit to Database")
     if submit_tx:
         # Reconnect to the database to insert the new row
-        db_url = os.environ.get("postgresql+psycopg2://{username}:{password}@{host}:/{database}")
+        db_url = os.environ.get("DATABASE_URL")
         engine = create_engine(db_url)
         
         # Execute the SQL Insert command
