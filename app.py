@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-# from sqlalchemy import create_engine # Uncomment when ready for live DB
+from sqlalchemy import create_engine
+import os # Added to securely read the Environment Variable
 
 st.set_page_config(page_title="Retail Analytics Dashboard", layout="wide")
 st.title("🛒 Dynamic Consumer Behavior Analytics")
@@ -9,19 +10,20 @@ st.title("🛒 Dynamic Consumer Behavior Analytics")
 # --- 5. LIVE DATABASE INTEGRATION (Read) ---
 @st.cache_data
 def load_data():
-    # Example of how you would connect to your database using the logic from your notebook:
-    # engine = create_engine("postgresql+psycopg2://postgres:abc123@localhost:5432/customer_behavior")
-    # df = pd.read_sql("SELECT * FROM customer", engine)
+    # 1. Securely fetch the database URL from Render's environment variables
+    db_url = os.environ.get("DATABASE_URL")
     
-    # For now, we load from the CSV file
-    df = pd.read_csv('customer_shopping_behavior.csv')
+    # 2. Connect to the cloud database
+    engine = create_engine(db_url)
     
-    # Cleaning columns to match the snake_case format from your Jupyter Notebook
+    # 3. Read the data live from the database instead of the CSV!
+    df = pd.read_sql("SELECT * FROM customer", engine)
+    
+    # Clean up column names in case they changed
     df.columns = df.columns.str.lower().str.replace(' ', '_')
     if 'purchase_amount_(usd)' in df.columns:
         df = df.rename(columns={'purchase_amount_(usd)': 'purchase_amount'})
         
-    # Ensuring your custom age_group logic is present
     if 'age_group' not in df.columns:
         labels = ['Young Adult', 'Adult', 'Middle-aged', 'Senior']
         df['age_group'] = pd.qcut(df['age'], q=4, labels=labels)
@@ -111,7 +113,18 @@ with st.sidebar.form("write_back_form"):
     
     submit_tx = st.form_submit_button("Submit to Database")
     if submit_tx:
-        # Placeholder for executing SQL directly to your PostgreSQL database
-        # insert_query = f"INSERT INTO customer (age, category, purchase_amount) VALUES ({new_age}, '{new_category}', {new_amount})"
-        # engine.execute(insert_query)
+        # Reconnect to the database to insert the new row
+        db_url = os.environ.get("DATABASE_URL")
+        engine = create_engine(db_url)
+        
+        # Execute the SQL Insert command
+        insert_query = f"INSERT INTO customer (age, category, purchase_amount) VALUES ({new_age}, '{new_category}', {new_amount})"
+        
+        with engine.connect() as conn:
+            conn.execute(st.text(insert_query))
+            conn.commit()
+            
         st.sidebar.success(f"Transaction recorded! Added ${new_amount} for {new_category}.")
+        
+        # This forces Streamlit to refresh the page and fetch the updated data!
+        st.rerun()
