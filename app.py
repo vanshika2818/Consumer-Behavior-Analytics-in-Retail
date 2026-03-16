@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import os # Added to securely read the Environment Variable
 
 st.set_page_config(page_title="Retail Analytics Dashboard", layout="wide")
@@ -121,7 +121,8 @@ with st.sidebar.form("write_back_form"):
         insert_query = f"INSERT INTO customer (age, category, purchase_amount) VALUES ({new_age}, '{new_category}', {new_amount})"
         
         with engine.connect() as conn:
-            conn.execute(st.text(insert_query))
+            # Replaced st.text with sqlalchemy's text
+            conn.execute(text(insert_query))
             conn.commit()
             
         st.sidebar.success(f"Transaction recorded! Added ${new_amount} for {new_category}.")
