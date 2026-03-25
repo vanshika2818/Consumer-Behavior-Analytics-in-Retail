@@ -21,10 +21,14 @@ An end-to-end data engineering and analytics solution that bridges the gap betwe
 * **Power BI:** Advanced DAX measures for calculating growth opportunities and seasonal trends.
 * **PostgreSQL:** Relational database for persistent storage of retail transactions.
 * **Python (Pandas/NumPy):** Data cleaning and ETL pipelines.
+<img width="1372" height="747" alt="Screenshot 2026-03-22 004302" src="https://github.com/user-attachments/assets/721e303e-9714-4490-acd1-011ddd0c67bd" />
+
 
 ### **Machine Learning & UI**
 * **Streamlit:** Front-end framework for the interactive analytics portal.
 * **Scikit-Learn:** Implementation of clustering and classification models for customer segmentation.
+<img width="1916" height="865" alt="Screenshot 2026-03-25 202850" src="https://github.com/user-attachments/assets/fb4f6380-3a2e-42c5-9763-efda67b22286" />
+
 
 ### **Infrastructure**
 * **Docker:** Containerization of the Streamlit app and PostgreSQL database.
