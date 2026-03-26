@@ -13,6 +13,9 @@ An end-to-end data engineering and analytics solution that bridges the gap betwe
 * **Transaction Management:** A functional CRUD-style interface to add new transactions directly to a **PostgreSQL** database.
 * **DevOps Ready:** Fully containerized environment using **Docker** for seamless deployment.
 
+### **Workflow**
+![image](https://github.com/user-attachments/assets/33f5e893-ed7d-4d7b-80a6-2e3690ff1a5b)
+
 ---
 
 ## 🛠️ Tech Stack & Architecture
@@ -34,8 +37,7 @@ An end-to-end data engineering and analytics solution that bridges the gap betwe
 * **Docker:** Containerization of the Streamlit app and PostgreSQL database.
 * **Git/GitHub:** Version control and collaboration.
 
-### **Workflow**
-![image](https://github.com/user-attachments/assets/33f5e893-ed7d-4d7b-80a6-2e3690ff1a5b)
+
 
 
 ---
