@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, text
 import os # Added to securely read the Environment Variable
 
 st.set_page_config(page_title="Retail Analytics Dashboard", layout="wide")
-st.title("🛒 Dynamic Consumer Behavior Analytics")
+st.title("Dynamic Consumer Behavior Analytics")
 
 # --- 5. LIVE DATABASE INTEGRATION (Read) ---
 @st.cache_data
@@ -52,7 +52,7 @@ filtered_df = df[
 ]
 
 # --- KPI METRICS ---
-st.markdown("### 📊 Key Performance Indicators")
+st.markdown("Key Performance Indicators")
 kpi1, kpi2, kpi3 = st.columns(3)
 
 # Calculate metrics dynamically based on filters
