@@ -92,7 +92,7 @@ st.dataframe(filtered_df, use_container_width=True, height=250)
 # Generate a CSV of the filtered results for download
 csv = filtered_df.to_csv(index=False).encode('utf-8')
 st.download_button(
-    label="📥 Download Filtered Data as CSV",
+    label="Download Filtered Data as CSV",
     data=csv,
     file_name='filtered_customer_data.csv',
     mime='text/csv',
