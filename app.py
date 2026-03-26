@@ -146,6 +146,6 @@ with st.sidebar.form("write_back_form"):
         st.rerun()
 
 st.sidebar.markdown("---")
-if st.sidebar.button("🔄 Refresh Data"):
+if st.sidebar.button("Refresh Data"):
     st.cache_data.clear()
     st.rerun()
