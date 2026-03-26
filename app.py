@@ -144,3 +144,8 @@ with st.sidebar.form("write_back_form"):
         load_data.clear()
         # This forces Streamlit to refresh the page and fetch the updated data!
         st.rerun()
+
+st.sidebar.markdown("---")
+if st.sidebar.button("🔄 Refresh Data"):
+    st.cache_data.clear()
+    st.rerun()
