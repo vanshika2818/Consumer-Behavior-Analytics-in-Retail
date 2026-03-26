@@ -146,6 +146,30 @@ with st.sidebar.form("write_back_form"):
         st.rerun()
 
 st.sidebar.markdown("---")
-if st.sidebar.button("Refresh Data"):
-    st.cache_data.clear()
+st.sidebar.header("Admin Controls")
+
+# Naya Reset Button jo original CSV ko wapas database mein daal dega
+if st.sidebar.button("Reset Database (Original 3900)"):
+    with st.spinner("Resetting database to original 3900 records..."):
+        try:
+            # 1. Original CSV file ko read karna
+            reset_df = pd.read_csv('customer_shopping_behavior.csv')
+            
+            # 2. Columns clean karna (jaise upload_data.py mein tha)
+            reset_df.columns = reset_df.columns.str.lower().str.replace(' ', '_')
+            if 'purchase_amount_(usd)' in reset_df.columns:
+                reset_df = reset_df.rename(columns={'purchase_amount_(usd)': 'purchase_amount'})
+            
+            # 3. Database se connect karke purani table ko replace karna
+            db_url = os.environ.get("DATABASE_URL")
+            engine = create_engine(db_url)
+            reset_df.to_sql("customer", engine, if_exists="replace", index=False)
+            
+            # 4. Cache clear karna taaki naya (original) data load ho
+            load_data.clear()
+            
+        except Exception as e:
+            st.sidebar.error(f"Error resetting database: {e}")
+            
+    # Page refresh karna
     st.rerun()
