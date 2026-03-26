@@ -24,6 +24,10 @@ def load_data():
     if 'purchase_amount_(usd)' in df.columns:
         df = df.rename(columns={'purchase_amount_(usd)': 'purchase_amount'})
         
+    # ✨ FIX: Handle missing values in previous_purchases column
+    if 'previous_purchases' in df.columns:
+        df['previous_purchases'] = df['previous_purchases'].fillna(0)
+        
     if 'age_group' not in df.columns:
         labels = ['Young Adult', 'Adult', 'Middle-aged', 'Senior']
         df['age_group'] = pd.qcut(df['age'], q=4, labels=labels)
@@ -47,6 +51,16 @@ filtered_df = df[
     (df['age_group'].isin(selected_age))
 ]
 
+# --- KPI METRICS ---
+st.markdown("### 📊 Key Performance Indicators")
+kpi1, kpi2, kpi3 = st.columns(3)
+
+# Calculate metrics dynamically based on filters
+kpi1.metric(label="Total Records", value=len(filtered_df))
+kpi2.metric(label="Average Purchase", value=f"${filtered_df['purchase_amount'].mean():.2f}")
+kpi3.metric(label="Total Revenue", value=f"${filtered_df['purchase_amount'].sum():,.2f}")
+
+st.markdown("---")
 # --- 3. INTERACTIVE VISUALIZATIONS ---
 st.subheader("Visual Analytics")
 col1, col2 = st.columns(2)
@@ -127,5 +141,6 @@ with st.sidebar.form("write_back_form"):
             
         st.sidebar.success(f"Transaction recorded! Added ${new_amount} for {new_category}.")
         
+        load_data.clear()
         # This forces Streamlit to refresh the page and fetch the updated data!
         st.rerun()
